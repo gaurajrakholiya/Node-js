@@ -18,12 +18,14 @@ const sequelize = new Sequelize( DATABASE,USERNAME, PASSWORD, {
     pool: {
         max: 25,
         min: 0,
+        acquire: 30000, 
         idle: 1000
     },
     define: {
         timestamps: false, // Enable timestamps for createdAt and updatedAt
         underscored: false, // Use snake_case for column names
-    }
+    },
+    
 });
 
 var db: any = {};

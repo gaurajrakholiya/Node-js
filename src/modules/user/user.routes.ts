@@ -1,10 +1,12 @@
-import express from "express";
-import { userController } from "./user.controller"
+import { Router } from "express";
+import { userController } from "./user.controller";
 
 export class userRoutes {
-    router = express.Router()
-    protected uc: userController = new userController()
-    constructor(){
-        this.router.use('/user', this.uc.createUser)
-    }
+  router = Router();
+  protected uc: userController = new userController();
+  constructor() {
+    this.router.post("/create-user", this.uc.createUser);
+    this.router.get("/get-user", this.uc.getUsers);
+    this.router.put("/update-user/:user_id", this.uc.updateUser);
+  }
 }

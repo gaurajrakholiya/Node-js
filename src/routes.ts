@@ -5,5 +5,6 @@ export class Routes {
     route = express.Router()
     path(){
         this.route.use('/user',new userRoutes().router)
+        return this.route
     }
 }
