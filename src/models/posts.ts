@@ -1,9 +1,12 @@
 import { DataTypes } from "sequelize";
-import db from "../models/index";
+import db from "./index";
 
 export const Posts = db.sequelize.define({
     post_id:{
         type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement:true,
+        unique:true,
         allowNull:false
     },
     title:{

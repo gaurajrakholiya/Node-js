@@ -1,23 +1,28 @@
 import { Request, Response } from "express";
-import { Users } from "../../models/user";
+import Users from "../../models/users";
 import db from "../../models/index";
 import { Sequelize, Op } from "sequelize";
+import Profiles from "../../models/profile";
 
 export class userController {
   createUser = async (req: Request, res: Response) => {
     try {
       const { firstname, email, birthdate, status } = req.body;
 
-      const user = await Users.create({
+      const user = await db.Users.create({
         firstname,
         email,
         birthdate,
         status,
       });
+      const profile = await db.Profiles.create({
+        bio: "in a world full of colors",
+        user_id: user.user_id,
+      });
 
       res.json({
         status: 200,
-        user,
+        data: { user, profile },
         message: "user created successfully",
       });
     } catch (error) {
@@ -32,9 +37,21 @@ export class userController {
     try {
       // const users = await Users.findAll();
 
-      const users = await Users.findAll({
-        attributes: ["email", "firstname"],
-      });
+      // const users = await db.Users.findAll({
+      //   raw: true,
+      //   nest: false, 
+      //   attributes: ["email", "firstname", [Sequelize.col("profile.bio"), "bio"]],
+      //   include: [
+      //     {
+      //       as: "profile",
+      //       model: db.Profiles,
+      //       attributes: [],
+      //     },
+      //   ],
+      //   where: {
+      //     user_id: "5",
+      //   },
+      // });
 
       // const users = await Users.findAll({
       //     attributes: ['firstname' ,
@@ -62,11 +79,17 @@ export class userController {
       //     }
       // })
 
-      //   const users = await Users.findAll({
-      //     where: {
-      //       firstname: { [Op.like]: "%ura%" },
-      //     },
-      //   });
+        const users = await db.Users.findOne({
+          raw:true,
+          where: {
+            user_id:4
+          },
+        });
+        users.update({
+          firstname:"qywsf"
+        })
+
+        console.log(users)
 
       res.json({
         status: 200,
@@ -76,7 +99,7 @@ export class userController {
     } catch (error) {
       res.json({
         status: 404,
-        message: console.error(error.message),
+        message: console.error(error),
       });
     }
   };
@@ -84,26 +107,25 @@ export class userController {
   updateUser = async (req: Request, res: Response) => {
     try {
       const { user_id } = req.params;
-      const { firstname,  status } = req.body;
+      const { firstname, status } = req.body;
 
-      const existinguser = await Users.findOne({where:{user_id }})
-      if(existinguser){
-        
-        const newUser =  await Users.update(
+      const existinguser = await db.Users.findOne({ where: { user_id } });
+      if (existinguser) {
+        const newUser = await db.Users.update(
           {
-            firstname ,
-            status
-          },{
-            where:{
+            firstname,
+            status,
+          },
+          {
+            where: {
               user_id,
-              
-            }
+            },
           }
         );
-  
-         res.json({
+
+        res.json({
           status: 200,
-          data : newUser,
+          data: newUser,
           message: "updated user",
         });
       }
@@ -114,4 +136,18 @@ export class userController {
       });
     }
   };
+
+
+  updatebulkuser = async (req:Request , res:Response) => {
+    try {
+      const { body } = req
+      console.log(body )
+      const updateUser = await db.Users.bulkCreate(body,{
+        updateOnDuplicate: ["firstname", "email", "birthdate", "status"],
+      })
+    res.status(200).json({ message: "Users updated successfully", data: updateUser });
+    } catch (error) {
+      console.log(error )
+    }
+  }
 }

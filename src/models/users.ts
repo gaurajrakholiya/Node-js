@@ -1,7 +1,8 @@
-import {  DataTypes } from "sequelize";
-import db from "../models/index";
+import { DataTypes, Sequelize } from "sequelize";
+import db from "./index";
 
-export const Users = db.sequelize.define(
+export default (sequelize: Sequelize) => {
+  return sequelize.define(
   "users",
   {
     user_id: {
@@ -30,8 +31,8 @@ export const Users = db.sequelize.define(
     },
   },
   {
-    tablename: "users",
-    timestamp: false,
+    tableName: "users",
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -42,3 +43,4 @@ export const Users = db.sequelize.define(
     ],
   }
 );
+}
