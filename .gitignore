@@ -13,4 +13,3 @@
 # ignore env file 
 .env
 
-/middleware

@@ -21,15 +21,15 @@ export class userController {
       //   user_id: user.user_id,
       // });
 
-      const posts = await db.Posts.create({
-        title: "nothing fisshy",
-        content: "qwetyuiopasdfgjklzxcvbnm",
-        user_id: 5,
-      });
+      // const posts = await db.Posts.create({
+      //   title: "nothing fisshy",
+      //   content: "qwetyuiopasdfgjklzxcvbnm",
+      //   user_id: 5,
+      // });
 
       res.json({
         status: 200,
-        data: { user, posts },
+        data: { user },
         message: "user created successfully",
       });
     } catch (error) {
