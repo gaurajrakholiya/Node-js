@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import * as dotenv from "dotenv";
 import  Profiles  from "./profile";
 import  Users  from "./users";
+import Posts  from "./posts";
 dotenv.config();
 
 const DATABASE: any = process.env.DATABASE;
@@ -35,6 +36,7 @@ db.Sequelize = Sequelize;
 
 db.Users =  Users(sequelize),
 db.Profiles = Profiles(sequelize),
+db.Posts = Posts(sequelize)
 
 
 db.Users.hasOne(db.Profiles, {
@@ -43,6 +45,17 @@ db.Users.hasOne(db.Profiles, {
 });
 
 db.Profiles.belongsTo(db.Users, {
+  foreignKey: "user_id",
+  as: "userInfo",
+});
+
+// one to many relationship
+db.Users.hasMany(db.Posts, {
+  foreignKey: "user_id",
+  as: "posts",
+});
+
+db.Posts.belongsTo(db.Users, {
   foreignKey: "user_id",
   as: "userInfo",
 });
