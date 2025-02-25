@@ -1,0 +1,15 @@
+# ignore all node modules
+/node_modules
+
+# ignore database
+/wakeonlan.sqlite
+
+# ignore all zip files
+*.zip
+
+# ignore build folder
+/dist
+
+# ignore env file 
+.env
+
