@@ -31,9 +31,10 @@ export class filescontroller {
       // }
 
       const { file } = req;
-      const fileName = "image/" + uuidv4();
+      const fileName = uuidv4(); // Genera
 
       const result = await putObject(file, fileName);
+      
 
       res.status(200).json({
         message: "uploaded to BUCKET",
